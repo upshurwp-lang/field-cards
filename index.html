@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}[hidden]{display:none!important}</style>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Field Cards">
+<meta name="theme-color" content="#fbfaf6" id="themecolor">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{background:#fbfaf6}html.night{background:#070404}nav{top:0}</style>
+<title>Field Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700&family=Barlow:wght@400;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: phone-first single column; tab strip picks one scenario card.
+   Day cards: deliberately single high-contrast light theme for reading in sun.
+   Night card: red-on-black to protect dark adaptation. Both set explicitly by body class. */
+:root{
+  --display:"Barlow Condensed","Arial Narrow",sans-serif;
+  --body:"Barlow","Helvetica Neue",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --bg:#fbfaf6; --panel:#ffffff; --line:#d9d4c6; --fg:#111111; --dim:#55503f; --hot:#9a3b0b; --tab:#ece7d9;
+  color-scheme:light;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5;transition:background .2s,color .2s}
+body.night{--bg:#070404;--panel:#140909;--line:#3a1414;--fg:#e06a5c;--dim:#9a4a40;--hot:#ff8f7a;--tab:#1e0c0c;color-scheme:dark}
+@media (prefers-reduced-motion:reduce){body{transition:none}}
+.wrap{max-width:660px;margin:0 auto;padding-inline:16px;padding-block:18px 48px;display:flex;flex-direction:column;gap:16px}
+header h1{font-family:var(--display);font-weight:700;font-size:2.1rem;line-height:1;margin:0;color:var(--hot);text-wrap:balance}
+header p{margin:.35rem 0 0;color:var(--dim);font-size:.9rem}
+nav{display:flex;flex-wrap:wrap;gap:6px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding-block:8px;z-index:2}
+nav button{font-family:var(--display);font-weight:500;font-size:.95rem;text-transform:uppercase;letter-spacing:.08em;border:1px solid var(--line);background:var(--tab);color:var(--fg);padding:7px 12px;border-radius:4px;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--hot);color:var(--bg);border-color:var(--hot)}
+nav button:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.panel{display:flex;flex-direction:column;gap:14px}
+.lede{margin:0;font-size:.95rem;color:var(--dim)}
+section{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+h2{font-family:var(--display);font-weight:700;font-size:1.05rem;text-transform:uppercase;letter-spacing:.12em;margin:0;color:var(--hot)}
+ol,ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:5px}
+li::marker{color:var(--dim)}
+b{color:var(--hot);font-weight:600}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:440px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--display);font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);font-size:.8rem}
+td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--hot);font-size:.85rem}
+.note{color:var(--dim);font-size:.87rem;margin:0}
+.fix{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:8px 12px;font-size:.92rem;margin:0}
+.fix dt{color:var(--hot);font-weight:600} .fix dd{margin:0}
+@media (max-width:440px){.fix{grid-template-columns:1fr}.fix dd{margin-bottom:6px}}
+footer{color:var(--dim);font-size:.8rem;text-align:center}
+</style>
+</head><body>
+
+<div class="wrap">
+<header>
+  <h1>a6700 Field Cards</h1>
+  <p>Kit: a6700 · 15mm f/1.4 G · Sigma 30mm f/1.4 · 18-135 · 70-350 G · 55mm polarizer · Peak Design tripod</p>
+</header>
+
+<nav role="tablist" aria-label="Shooting cards">
+  <button role="tab" id="t-setup" data-tab="setup">Setup</button>
+  <button role="tab" id="t-wildlife" data-tab="wildlife">Wildlife</button>
+  <button role="tab" id="t-birds" data-tab="birds">Birds</button>
+  <button role="tab" id="t-landscape" data-tab="landscape">Landscape</button>
+  <button role="tab" id="t-people" data-tab="people">People</button>
+  <button role="tab" id="t-night" data-tab="night">Night</button>
+  <button role="tab" id="t-underwater" data-tab="underwater">Underwater</button>
+</nav>
+
+<!-- SETUP -->
+<div class="panel" id="setup" role="tabpanel" aria-labelledby="t-setup">
+  <p class="lede">Do this once at home. Then each card is a single turn of the mode dial.</p>
+  <section>
+    <h2>Every card assumes</h2>
+    <ul>
+      <li><b>RAW + JPEG</b>. RAW lets you rescue exposure later. The JPEG is for quick sharing on the iPad.</li>
+      <li><b>Auto ISO</b> with a ceiling of <b>6400</b> by day and <b>12800</b> at night. The a6700 cleans up well to 6400.</li>
+      <li><b>Mechanical shutter</b>. The electronic shutter bends fast-moving subjects (rolling shutter).</li>
+      <li><b>Histogram</b> on in the viewfinder display. Trust it over the screen.</li>
+      <li><b>Format the card</b> in camera at the start of each trip, never on the iPad.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Save the presets to the mode dial</h2>
+    <p class="note">Set the camera up as the card describes, then MENU → Shooting → Shooting Mode → Camera Set. Memory → pick a slot.</p>
+    <dl class="fix">
+      <dt>Dial 1 · Wildlife</dt><dd>M, f/6.3, 1/1000, Auto ISO, AF-C, Tracking: Zone, Animal recognition, Burst Mid</dd>
+      <dt>Dial 2 · Birds in flight</dt><dd>M, f/6.3, 1/2500, Auto ISO, AF-C, Tracking: Wide, Bird recognition, Burst Hi+</dd>
+      <dt>Dial 3 · Night</dt><dd>M, f/1.4, 10 s, ISO 1600, MF, SteadyShot off, 2-sec timer, WB 4000K</dd>
+    </dl>
+    <p class="note">Landscape and People use A mode directly. No preset needed.</p>
+  </section>
+  <section>
+    <h2>Exposure in one line each</h2>
+    <dl class="fix">
+      <dt>Shutter speed</dt><dd>Freezes or blurs motion. The first thing to set for animals.</dd>
+      <dt>Aperture (f-number)</dt><dd>Low number lets in more light and blurs the background. High number gives more depth in focus.</dd>
+      <dt>ISO</dt><dd>Brightens the image after the fact. Costs noise. Let Auto ISO handle it.</dd>
+      <dt>Exposure comp (±)</dt><dd>Works in M with Auto ISO. Minus for bright scenes or white animals. Plus for dark animals or backlight.</dd>
+    </dl>
+  </section>
+</div>
+
+<!-- WILDLIFE -->
+<div class="panel" id="wildlife" role="tabpanel" aria-labelledby="t-wildlife" hidden>
+  <p class="lede">Game drives with the 70-350. Dial 1. On the a6700, 350mm frames like 525mm, so shake shows fast.</p>
+  <section>
+    <h2>Settings</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Subject</th><th>Aperture</th><th>Shutter</th><th>ISO</th><th>AF</th></tr></thead>
+      <tbody>
+        <tr><td>Resting lion, leopard in tree</td><td class="n">f/6.3</td><td class="n">1/500</td><td class="n">Auto ≤6400</td><td>AF-C, Animal eye</td></tr>
+        <tr><td>Walking elephants, grazing herds</td><td class="n">f/6.3–8</td><td class="n">1/800</td><td class="n">Auto</td><td>AF-C, Zone</td></tr>
+        <tr><td>Running cheetah, sparring impala</td><td class="n">f/6.3</td><td class="n">1/2000</td><td class="n">Auto</td><td>AF-C, Tracking Wide</td></tr>
+        <tr><td>Animal in its landscape</td><td class="n">f/8</td><td class="n">1/500</td><td class="n">Auto</td><td>18-135, Zone</td></tr>
+        <tr><td>Creative pan (motion blur)</td><td class="n">f/11</td><td class="n">1/30–1/60</td><td class="n">Auto</td><td>AF-C, swing with it</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">Use two or more animals at f/8–f/11 so both are sharp. A single animal stays wide open.</p>
+  </section>
+  <section>
+    <h2>Technique</h2>
+    <ul>
+      <li>Ask the driver to <b>turn off the engine</b>. Idle vibration shows at 350mm.</li>
+      <li><b>SteadyShot on</b>. Brace on the window frame or roll bar. Never rest the lens on the vehicle while the engine runs.</li>
+      <li>Burst <b>Mid (about 8 fps)</b> for animals that are mostly still. It saves card space and culling time.</li>
+      <li>Focus on the <b>eye</b>. If the eye is soft, the shot is soft.</li>
+      <li>Leave space <b>in the direction the animal faces</b>.</li>
+      <li>Shoot from a <b>low seat</b> when you can. Eye level beats looking down.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Light and exposure comp</h2>
+    <dl class="fix">
+      <dt>Golden hours</dt><dd>First and last 90 minutes of daylight. Your best frames will come from these drives.</dd>
+      <dt>Midday glare</dt><dd>Look for shade, backlit dust or close-up details. Go wide with the 18-135 to show heat haze and sky.</dd>
+      <dt>White subjects, bright sky</dt><dd><b>–0.3 to –0.7</b> (egrets, zebra stripes, overcast background)</dd>
+      <dt>Dark subjects</dt><dd><b>+0.3 to +0.7</b> (buffalo, wildebeest, a lion in shade)</dd>
+    </dl>
+  </section>
+</div>
+
+<!-- BIRDS -->
+<div class="panel" id="birds" role="tabpanel" aria-labelledby="t-birds" hidden>
+  <p class="lede">Dial 2. The hardest subject. Expect a low keep rate and shoot a lot.</p>
+  <section>
+    <h2>Settings</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Subject</th><th>Aperture</th><th>Shutter</th><th>AF area</th><th>Drive</th></tr></thead>
+      <tbody>
+        <tr><td>Perched small bird (roller, bee-eater)</td><td class="n">f/6.3</td><td class="n">1/800</td><td>Spot, Bird eye</td><td>Mid</td></tr>
+        <tr><td>Takeoff / landing</td><td class="n">f/6.3</td><td class="n">1/2500</td><td>Zone, Bird</td><td>Hi+</td></tr>
+        <tr><td>Large bird soaring (vulture, eagle)</td><td class="n">f/6.3</td><td class="n">1/2000</td><td>Tracking Wide</td><td>Hi+</td></tr>
+        <tr><td>Fast bird in flight (tern, swallow)</td><td class="n">f/6.3</td><td class="n">1/3200</td><td>Tracking Wide</td><td>Hi+</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">Hi+ is 11 fps. The buffer fills in a few seconds, so shoot in short bursts.</p>
+  </section>
+  <section>
+    <h2>Technique</h2>
+    <ul>
+      <li>Find the bird at <b>about 200mm</b> first, then zoom in. At 350mm it's hard to find in the frame.</li>
+      <li>Keep <b>both eyes open</b> if you can, so you see the bird coming before it enters the frame.</li>
+      <li><b>Half-press early</b> and hold it so tracking locks on before the moment.</li>
+      <li>Pan from your <b>hips</b>, not your arms, and keep following through after the burst.</li>
+      <li>On a perched bird, frame loose and wait for takeoff. Birds usually <b>lean forward and poop</b> just before they leave.</li>
+      <li>Blue sky behind a dark bird underexposes it. Dial <b>+0.7 to +1</b>.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Likely subjects</h2>
+    <dl class="fix">
+      <dt>Mara</dt><dd>Lilac-breasted roller, vultures at kills, secretary bird, marabou stork, ostrich, fish eagle near the river</dd>
+      <dt>Seychelles</dt><dd>White fairy terns, frigatebirds, tropicbirds riding wind off the cliffs</dd>
+    </dl>
+  </section>
+</div>
+
+<!-- LANDSCAPE -->
+<div class="panel" id="landscape" role="tabpanel" aria-labelledby="t-landscape" hidden>
+  <p class="lede">A mode. Mara plains and Seychelles beaches. Slow down: landscapes don't run away.</p>
+  <section>
+    <h2>Settings</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Scene</th><th>Lens</th><th>Aperture</th><th>ISO</th><th>Support</th></tr></thead>
+      <tbody>
+        <tr><td>Open plains, daylight</td><td>18-135 at 18–35</td><td class="n">f/8</td><td class="n">100</td><td>Handheld</td></tr>
+        <tr><td>Beach, turquoise water</td><td>15mm + polarizer</td><td class="n">f/8</td><td class="n">100</td><td>Handheld</td></tr>
+        <tr><td>Sunrise / sunset, wide</td><td>15mm or 18-135</td><td class="n">f/8–11</td><td class="n">100</td><td>Tripod</td></tr>
+        <tr><td>Big sun behind an acacia</td><td>70-350 at 350</td><td class="n">f/8</td><td class="n">100</td><td>Tripod or brace</td></tr>
+        <tr><td>Waves, smooth water</td><td>15mm</td><td class="n">f/16</td><td class="n">100</td><td>Tripod, 1/2–2 s</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+  <section>
+    <h2>Polarizer (55mm: fits the 15mm and 18-135)</h2>
+    <ul>
+      <li>Strongest at <b>90° from the sun</b>. Point at the sun with one arm and the other arm shows the best direction.</li>
+      <li>Rotate it while watching the screen. Stop when the water turns clear and turquoise.</li>
+      <li>On the <b>15mm</b>, a polarizer can darken one side of the sky more than the other. Ease off or take it off if the sky looks blotchy.</li>
+      <li>It costs about <b>1.5 stops</b>. Take it off at dusk.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>Technique</h2>
+    <ul>
+      <li>Expose for the <b>sky</b>. A bright sky clips first, and dark ground recovers better in RAW.</li>
+      <li>High contrast: bracket <b>3 frames at ±1.3 EV</b> and merge later.</li>
+      <li>Turn on the <b>grid and electronic level</b>. A tilted horizon is the easiest mistake to avoid.</li>
+      <li>Give it a <b>foreground</b>: a termite mound, a granite boulder, tracks in sand.</li>
+      <li>Telephoto <b>compresses</b> distance. A setting sun at 350mm looks enormous behind trees.</li>
+      <li>Don't aim at the sun at long focal lengths for long when it's high. It can damage the sensor. Low sun at sunset is fine.</li>
+    </ul>
+  </section>
+</div>
+
+<!-- PEOPLE -->
+<div class="panel" id="people" role="tabpanel" aria-labelledby="t-people" hidden>
+  <p class="lede">A mode. The Sigma 30mm (about a 45mm view) is your portrait lens. The 15mm is for groups and people in their setting.</p>
+  <section>
+    <h2>Settings</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Shot</th><th>Lens</th><th>Aperture</th><th>Shutter (min)</th><th>AF</th></tr></thead>
+      <tbody>
+        <tr><td>One person, soft background</td><td>Sigma 30mm</td><td class="n">f/1.8–2.8</td><td class="n">1/250</td><td>AF-C, Human eye</td></tr>
+        <tr><td>Two people side by side</td><td>Sigma 30mm</td><td class="n">f/2.8–4</td><td class="n">1/250</td><td>AF-C, Human eye</td></tr>
+        <tr><td>Group of 3+</td><td>15mm or 18-135</td><td class="n">f/5.6–8</td><td class="n">1/250</td><td>Zone</td></tr>
+        <tr><td>Person in a landscape</td><td>15mm</td><td class="n">f/4–5.6</td><td class="n">1/250</td><td>Human eye</td></tr>
+        <tr><td>Candid from the vehicle</td><td>70-350</td><td class="n">f/6.3</td><td class="n">1/500</td><td>AF-C, Human eye</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">f/1.4 looks dreamy, but the depth in focus is very thin. One eye sharp, the other soft. Start at f/2 until you trust it.</p>
+  </section>
+  <section>
+    <h2>Light</h2>
+    <ul>
+      <li><b>Open shade</b> beats direct sun: under a tent awning, on the shaded side of the lodge.</li>
+      <li>Sun <b>behind</b> the person gives hair glow. Dial <b>+0.7 to +1</b> so the face isn't dark.</li>
+      <li>Midday sun on faces makes harsh shadows. Turn them so the sun is at their back, or move into shade.</li>
+      <li>Golden hour on a lodge deck is the portrait you'll want to frame.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>With people you don't know</h2>
+    <ul>
+      <li><b>Always ask first.</b> On a Maasai village visit, ask your guide what's expected. Payment or a community contribution is common and usually arranged through the lodge.</li>
+      <li>For children, ask a parent.</li>
+      <li>Show them the shot on the screen afterward. It turns the moment into a conversation.</li>
+      <li>Guides and camp staff are usually happy to be photographed with the vehicle or the view. Ask anyway.</li>
+    </ul>
+  </section>
+</div>
+
+<!-- NIGHT -->
+<div class="panel" id="night" role="tabpanel" aria-labelledby="t-night" hidden>
+  <p class="lede">Dial 3. The screen turns red to protect your night vision. Turn phone brightness all the way down.</p>
+  <section>
+    <h2>Set up before dark</h2>
+    <ol>
+      <li><b>M</b> mode, lens switch to <b>MF</b>. <b>SteadyShot off</b> on the tripod.</li>
+      <li>Drive: <b>2-sec self-timer</b>.</li>
+      <li>White balance <b>4000K</b> manual.</li>
+      <li>Long Exposure NR <b>off</b>. Otherwise each frame takes twice as long.</li>
+      <li>Monitor brightness <b>manual, low</b>. Judge exposure on the <b>histogram</b>.</li>
+      <li>Remove the <b>UV filter</b>. It adds flare and halos around bright stars.</li>
+    </ol>
+  </section>
+  <section>
+    <h2>Nail focus</h2>
+    <ol>
+      <li>The 15mm's focus ring has <b>no hard stop at infinity</b>. Turning it all the way is <b>not</b> sharp.</li>
+      <li>Aim at the brightest star. Turn on <b>Focus Magnifier</b> at full zoom.</li>
+      <li>Turn the ring until the star is the <b>smallest point</b>. Then leave it alone.</li>
+      <li>Take a test shot and zoom in on playback. You want a dot, not a donut.</li>
+    </ol>
+  </section>
+  <section>
+    <h2>Starting exposures</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Shot</th><th>Lens</th><th>Aperture</th><th>Shutter</th><th>ISO</th></tr></thead>
+      <tbody>
+        <tr><td>Stars, sharp points</td><td>15mm f/1.4</td><td class="n">f/1.4–2</td><td class="n">10 s</td><td class="n">1600–3200</td></tr>
+        <tr><td>Stars, slight trailing OK</td><td>15mm f/1.4</td><td class="n">f/1.4</td><td class="n">15–20 s</td><td class="n">800–1600</td></tr>
+        <tr><td>Stars, no fast lens</td><td>18-135 at 18</td><td class="n">f/3.5</td><td class="n">13 s</td><td class="n">6400</td></tr>
+        <tr><td>Star trails</td><td>15mm</td><td class="n">f/2.8</td><td class="n">30 s × 60–120</td><td class="n">400–800</td></tr>
+        <tr><td>Moon</td><td>70-350 at 350</td><td class="n">f/8</td><td class="n">1/250</td><td class="n">100–200</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">The shutter limits use the NPF rule for 26 MP APS-C. If the histogram is crammed to the left, raise ISO before slowing the shutter.</p>
+  </section>
+  <section>
+    <h2>Mara night drives</h2>
+    <ul>
+      <li>Handheld. <b>SteadyShot on</b>. Brace and ask for the <b>engine off</b>.</li>
+      <li>Spotlit animals: <b>70-350</b>, <b>f/5.6–6.3</b>, <b>1/160–1/250</b>, Auto ISO capped at 12800, <b>Animal eye AF</b>.</li>
+      <li>Closer or wider scenes: <b>15mm f/1.4</b> at 1/60 keeps ISO low.</li>
+      <li>Spot metering on the animal, <b>–0.7 to –1 EV</b>. Shoot bursts and keep the sharpest frame.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>What's up</h2>
+    <dl class="fix">
+      <dt>New York area, October</dt><dd>Dark after about 8:15pm near new moon (Oct 10). The Milky Way core sets in the SW by about 9:30. Cygnus is overhead, Andromeda high in the NE.</dd>
+      <dt>Kenya, week before Nov 9 new moon</dt><dd>The moon doesn't rise until 3–6am, so <b>evenings are moonless</b>. Milky Way core in the W after dusk. Both Magellanic Clouds low in the S/SE.</dd>
+      <dt>Indian Ocean, days after new moon</dt><dd>A thin crescent sets soon after sunset. Good for star shots over the water.</dd>
+    </dl>
+  </section>
+</div>
+
+<!-- UNDERWATER -->
+<div class="panel" id="underwater" role="tabpanel" aria-labelledby="t-underwater" hidden>
+  <p class="lede">iPhone in a SeaTouch housing with UWACAM. Read this on the boat, not at depth.</p>
+  <section>
+    <h2>On the boat, before you roll in</h2>
+    <ol>
+      <li>Charge to <b>100%</b>. Turn on <b>Airplane mode</b> and set Auto-Lock to <b>Never</b> so the screen doesn't lock mid-dive.</li>
+      <li>Clean the <b>O-ring</b> and check it for hair or sand. One grain is enough to flood it.</li>
+      <li><b>Dunk test</b> the empty housing in the rinse tank, then put the phone in.</li>
+      <li>Open UWACAM, check <b>UWACOLOR is on</b>, and take a test shot on deck.</li>
+      <li>Close the housing in shade or AC. Sealing in warm humid air fogs the port.</li>
+    </ol>
+  </section>
+  <section>
+    <h2>Which mode</h2>
+    <dl class="fix">
+      <dt>AUTO</dt><dd>Start here for the first dives. Big buttons, UWACOLOR fixes color for you. Pick <b>1×</b> or <b>0.5×</b>.</dd>
+      <dt>PRO</dt><dd>Once AUTO feels easy. Manual exposure, ISO and white balance, plus <b>histogram</b>, <b>zebras</b> (blown highlights) and <b>focus peaking</b>.</dd>
+      <dt>Grey card (PRO)</dt><dd>Point at a white slate, sand or your palm and tap Grey Card. <b>Redo it every ~5 m</b> of depth change. Color shifts fast with depth.</dd>
+    </dl>
+  </section>
+  <section>
+    <h2>Starting settings (PRO)</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Subject</th><th>Lens</th><th>Shutter</th><th>ISO</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Reef scene, sun overhead</td><td>0.5×</td><td class="n">1/250</td><td class="n">Auto ≤400</td><td>Sun behind you</td></tr>
+        <tr><td>Fish, turtles</td><td>1×</td><td class="n">1/500</td><td class="n">Auto ≤800</td><td>Within 1 m</td></tr>
+        <tr><td>Diver silhouette, sunburst</td><td>0.5×</td><td class="n">1/1000</td><td class="n">50–100</td><td>Shoot up, expose for sky</td></tr>
+        <tr><td>Video, easy</td><td>0.5× / 1×</td><td class="n">4K 30</td><td class="n">Auto</td><td>UWACOLOR live</td></tr>
+        <tr><td>Video, for grading</td><td>0.5× / 1×</td><td class="n">4K 30</td><td class="n">Auto</td><td>Apple Log, grade in Resolve</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">Skip the telephoto lens underwater. Zooming in puts more water between you and the subject, which costs contrast and color. Move closer instead.</p>
+  </section>
+  <section>
+    <h2>Technique</h2>
+    <ul>
+      <li><b>Get close, then closer.</b> Under 1 m is ideal. Water strips out red within about 5 m.</li>
+      <li>Shallow water (<b>5–12 m</b>) on a sunny day gives the best natural color.</li>
+      <li>Get <b>low and shoot slightly up</b> at fish. Blue water behind beats a busy reef.</li>
+      <li>Flip to the <b>upside-down UI</b> for low-angle shots near the sand.</li>
+      <li>Hold still and exhale before you press. <b>Buoyancy first</b>. Never kneel on or touch the reef for a shot.</li>
+      <li>Give turtles space and never block their path to the surface.</li>
+      <li>Snorkeling: try <b>half-in, half-out</b> split shots in calm water. Wipe the port first.</li>
+    </ul>
+  </section>
+  <section>
+    <h2>After the dive</h2>
+    <ul>
+      <li>Soak the closed housing in <b>fresh water</b>. Press every button a few times to flush salt.</li>
+      <li><b>Towel dry</b>, especially around the seal, <b>before</b> opening.</li>
+      <li>Batch-apply UWACOLOR to the keepers at the lodge. AirDrop to the iPad for backup.</li>
+    </ul>
+  </section>
+</div>
+
+<footer>Sony a6700 · iPhone + UWACAM · Starting points, not rules. Check the histogram.</footer>
+</div>
+
+<script>
+(function(){
+  var tabs=[].slice.call(document.querySelectorAll('nav [data-tab]'));
+  function show(id){
+    if(!document.getElementById(id)) id='setup';
+    tabs.forEach(function(b){
+      var on=b.dataset.tab===id;
+      b.setAttribute('aria-selected',on?'true':'false');
+      b.tabIndex=on?0:-1;
+      document.getElementById(b.dataset.tab).hidden=!on;
+    });
+    document.body.classList.toggle('night',id==='night');document.documentElement.classList.toggle('night',id==='night');var tc=document.getElementById('themecolor');if(tc)tc.content=id==='night'?'#070404':'#fbfaf6';
+    try{localStorage.setItem('a6700tab',id)}catch(e){}
+  }
+  tabs.forEach(function(b){b.addEventListener('click',function(){show(b.dataset.tab);try{history.replaceState(null,'','#'+b.dataset.tab)}catch(e){}window.scrollTo(0,0)})});
+  var start=(location.hash||'').slice(1);
+  if(!start){try{start=localStorage.getItem('a6700tab')||''}catch(e){}}
+  show(start||'setup');
+})();
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){})})}
+</script>
+</body></html>
